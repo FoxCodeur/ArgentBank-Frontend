@@ -6,6 +6,7 @@ import Nav from "../Nav/Nav";
 import Footer from "../Footer/Footer";
 import Home from "../../pages/Home/Home";
 import LoginForm from "../../pages/LoginForm/LoginForm";
+import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 
 const App = () => {
   return (
@@ -16,16 +17,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/user/login" element={<LoginForm />} />
           <Route path="/user/signup" element={<h1>Page (Inscription)</h1>} />
-          <Route
-            path="/user/profile"
-            element={
-              <div>
-                <h1>Page Profil</h1>
-                <p>Récupération des données utilisateur (GET)</p>
-                <p>Modification du pseudo (PATCH)</p>
-              </div>
-            }
-          />
+          {/* route dynamique */}
+          {/* <Route path="/user/:id/profile" element={<ProfilePage />} /> */}
+          <Route path="/user/profile" element={<ProfilePage />} />
         </Routes>
       </main>
       <Footer />
