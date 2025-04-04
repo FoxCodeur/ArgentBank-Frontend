@@ -18,8 +18,7 @@ const App = () => {
           <Route path="/user/login" element={<LoginForm />} />
           <Route path="/user/signup" element={<h1>Page (Inscription)</h1>} />
           {/* route dynamique */}
-          {/* <Route path="/user/:id/profile" element={<ProfilePage />} /> */}
-          <Route path="/user/profile" element={<ProfilePage />} />
+          <Route path="/user/:id/profile" element={<ProfilePage />} />
         </Routes>
       </main>
       <Footer />
