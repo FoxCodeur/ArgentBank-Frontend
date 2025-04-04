@@ -18,9 +18,7 @@ const LoginForm = () => {
     // modifié (son nom et sa valeur)
 
     // Mise à jour de l'état formData avec la nouvelle valeur pour le
-    //  champ concerné. Cette syntaxe garantit que seul le champ
-    // modifié (par exemple username ou password) sera mis à jour,
-    //  tandis que les autres champs de l'état seront laissés intacts.
+    //  champ concerné. Cette syntaxe garantit que seul le champ modifié (par exemple username ou password) sera mis à jour, tandis que les autres champs de l'état seront laissés intacts.
     setFormData((prevState) => ({
       ...prevState, // Conserver les autres champs intacts
       [name]: value, // Mettre à jour le champ correspondant
