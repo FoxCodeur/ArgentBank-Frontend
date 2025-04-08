@@ -1,64 +1,65 @@
-import React, { useState } from "react"; // Importation de React et du hook useState
-import { NavLink } from "react-router-dom"; // Importation de NavLink pour la navigation entre les pages
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Importation des icônes FontAwesome
-import { faUserCircle, faSignOutAlt } from "@fortawesome/free-solid-svg-icons"; // Importation des icônes spécifiques
-import logo from "../../assets/img/argentBankLogo.png"; // Importation du logo
-import "./Nav.scss"; // Importation du fichier de styles CSS
+import React from "react";
+
+import { NavLink, useNavigate } from "react-router-dom"; // Importation de useNavigate pour redirection
+
+import { useDispatch, useSelector } from "react-redux"; // Importation de dispatch et selector
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { faUserCircle, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+
+import { logOut } from "../../redux/slices/authSlice"; // Action pour déconnexion
+
+import logo from "../../assets/img/argentBankLogo.png";
+
+import "./Nav.scss";
 
 const Nav = () => {
-  // 🔹 État pour savoir si l'utilisateur est connecté ou non (false = déconnecté par défaut)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
 
-  // 🔹 État pour stocker les informations de l'utilisateur (par défaut, un pseudo "mocké")
-  const [user, setUser] = useState({ firstName: "Pseudo" });
+  const navigate = useNavigate(); // Hook pour redirection
 
-  // 🔹 Fonction pour gérer la déconnexion de l'utilisateur
+  const user = useSelector((state) => state.auth.user); // Sélection de l'utilisateur dans le store
+
+  // 🔹 Vérifier si l'utilisateur est connecté
+
+  const isLoggedIn = user !== null;
+
+  // 🔹 Fonction pour déconnexion
+
   const handleLogout = () => {
-    setIsLoggedIn(false); // On met isLoggedIn à false → l'utilisateur est déconnecté
-    setUser(null); // On enlève les infos de l'utilisateur (on met user à null)
-  };
+    dispatch(logOut()); // Déconnexion via Redux
 
-  // 🔹 Fonction pour gérer la connexion de l'utilisateur (simulée ici)
-  const handleLogin = () => {
-    setIsLoggedIn(true); // On met isLoggedIn à true → l'utilisateur est connecté
-    setUser({ firstName: "Pseudo" }); // On simule un utilisateur connecté
+    navigate("/"); // Redirection après déconnexion
   };
 
   return (
     <div className="main-nav">
-      {/* 🔹 Logo avec lien vers la page d'accueil */}
       <NavLink to="/" className="main-nav-logo">
         <img
           className="main-nav-logo-image"
           src={logo}
           alt="Argent Bank Logo"
         />
+
         <h1 className="sr-only">Argent Bank</h1>
       </NavLink>
 
       <div className="main-nav-items">
-        {/* 🔹 Affichage conditionnel : Si l'utilisateur est connecté */}
         {isLoggedIn ? (
           <>
-            {/* Lien vers le profil de l'utilisateur */}
             <NavLink to="/user/profile" className="main-nav-item">
               <FontAwesomeIcon icon={faUserCircle} className="icon" />
-              {user.firstName} {/* Affiche le prénom de l'utilisateur */}
+              {user?.firstName || "User"} {/* Affiche le prénom ou 'User' */}
             </NavLink>
 
-            {/* Bouton de déconnexion */}
             <button onClick={handleLogout} className="main-nav-item">
               <FontAwesomeIcon icon={faSignOutAlt} className="icon" />
               Sign Out
             </button>
           </>
         ) : (
-          // 🔹 Si l'utilisateur n'est PAS connecté → Affichage du lien "Sign In"
-          <NavLink
-            to="/user/login"
-            className="main-nav-item"
-            onClick={handleLogin} // Simule la connexion au clic
-          >
+          <NavLink to="/user/login" className="main-nav-item">
             <FontAwesomeIcon icon={faUserCircle} className="icon" />
             Sign In
           </NavLink>

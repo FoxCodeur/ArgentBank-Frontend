@@ -1,62 +1,99 @@
 import React, { useState } from "react";
-import "./LoginForm.scss";
+
+import { useDispatch } from "react-redux";
+
+import { useNavigate } from "react-router-dom";
+
+import { useLoginMutation } from "../../redux/slices/apiSlice";
+
+import { setCredentials } from "../../redux/slices/authSlice";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
+import "./LoginForm.scss";
+
 const LoginForm = () => {
-  // Initialisation de l'état local 'formData' pour stocker les
-  // valeurs des deux champs
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    username: "", // Champ utilisateur
-    password: "", // Champ mot de passe
+    email: "", // clé renommée ici
+
+    password: "",
   });
 
-  // Fonction pour gérer le changement dans les champs de saisie
-  // (username et password)
-  const handleInputChange = (e) => {
-    const { name, value } = e.target; // Déstructuration de l'élément
-    // modifié (son nom et sa valeur)
+  const [login, { isLoading, error }] = useLoginMutation();
 
-    // Mise à jour de l'état formData avec la nouvelle valeur pour le
-    //  champ concerné. Cette syntaxe garantit que seul le champ modifié (par exemple username ou password) sera mis à jour, tandis que les autres champs de l'état seront laissés intacts.
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
     setFormData((prevState) => ({
-      ...prevState, // Conserver les autres champs intacts
-      [name]: value, // Mettre à jour le champ correspondant
-      // (username ou password)
+      ...prevState,
+
+      [name]: value,
     }));
   };
 
-  // Fonction de validation du formulaire
   const validateForm = () => {
-    let isValid = true; // Variable qui détermine si le formulaire est
-    // valide ou non
+    const { email, password } = formData;
 
-    // Validation du champ 'password' (ici on vérifie si le mot de
-    // passe est vide et s'il a une longueur minimale)
-    if (!formData.password) {
-      alert("Error: Le mot de passe est requis.");
-      isValid = false;
-    } else if (formData.password.length < 11) {
-      alert("Le mot de passe doit contenir au moins 11 caractères.");
-      isValid = false;
+    if (!email.trim()) {
+      alert("Veuillez entrer votre adresse e-mail.");
+
+      return false;
     }
 
-    return isValid; // Retourne true si le formulaire est valide, sinon
-    //  false
+    if (!password) {
+      alert("Le mot de passe est requis.");
+
+      return false;
+    }
+
+    if (password.length < 11) {
+      alert("Le mot de passe doit contenir au moins 11 caractères.");
+
+      return false;
+    }
+
+    return true;
   };
 
-  // Fonction de soumission du formulaire
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Empêche le comportement par défaut du
-    //  formulaire (qui serait de recharger la page)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const isFormValid = validateForm(); // Appel à la fonction de
-    //  validation du formulaire
+    if (!validateForm()) return;
 
-    if (isFormValid) {
-      console.log("Le formulaire est valide, soumission en cours...");
-      // À ce moment, tu pourrais envoyer les données du formulaire vers
-      //  un serveur (via une API, par exemple)
+    try {
+      // Log des données envoyées
+      console.log("Form data before sending:", formData);
+
+      const response = await login({
+        email: formData.email,
+        password: formData.password,
+      }).unwrap();
+
+      // Log de la réponse du backend
+      console.log("Backend response:", response);
+
+      // Log du token correctement récupéré dans response.body.token
+      console.log("Token received:", response.body.token);
+
+      // Dispatch avec les informations utilisateur et token
+      dispatch(
+        setCredentials({ user: response.body.user, token: response.body.token })
+      );
+
+      // Log après dispatch
+      console.log("Token après dispatch:", response.body.token);
+
+      // Redirection vers le profil de l'utilisateur
+      navigate("/user/profile");
+    } catch (err) {
+      console.error("Erreur lors de la connexion :", err);
+      alert("Erreur de connexion : vérifiez vos identifiants.");
     }
   };
 
@@ -69,40 +106,46 @@ const LoginForm = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="input-wrapper">
-            <label htmlFor="username">Username (Email)</label>
+            <label htmlFor="email">Email</label>
+
             <input
-              type="email" // Type 'email' pour valider le format de l'email
-              id="username"
-              name="username" // Attribut 'name' utilisé pour gérer
-              // l'état et l'événement
-              value={formData.username} // La valeur de l'input est liée
-              // à l'état 'username'
-              onChange={handleInputChange} // Appelle la fonction
-              // handleInputChange lorsque la valeur change
+              type="email"
+              id="email"
+              name="email" // clé renommée ici aussi
+              value={formData.email}
+              onChange={handleInputChange}
+              required
             />
           </div>
+
           <div className="input-wrapper">
             <label htmlFor="password">Password</label>
+
             <input
               type="password"
               id="password"
-              name="password" // Attribut 'name' utilisé pour gérer
-              // l'état et l'événement
-              value={formData.password} // La valeur de l'input est liée
-              // à l'état 'password'
-              onChange={handleInputChange} // Appelle la fonction
-              // handleInputChange lorsque la valeur change
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
             />
           </div>
+
           <div className="input-remember">
             <input type="checkbox" id="remember-me" />
-            {/* Case à cocher pour "se souvenir de l'utilisateur" */}
+
             <label htmlFor="remember-me">Remember me</label>
           </div>
-          <button type="submit" className="sign-in-button">
-            Sign In
-            {/* Bouton de soumission du formulaire */}
+
+          <button type="submit" className="sign-in-button" disabled={isLoading}>
+            {isLoading ? "Signing In..." : "Sign In"}
           </button>
+
+          {error && (
+            <p className="error-message">
+              Erreur : {error.data?.message || error.error}
+            </p>
+          )}
         </form>
       </section>
     </main>
