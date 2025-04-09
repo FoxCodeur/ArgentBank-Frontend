@@ -1,15 +1,16 @@
 import React from "react";
-
+import { useSelector } from "react-redux";
 import "./ProfilePage.scss";
 
 const ProfilePage = () => {
+  const user = useSelector((state) => state.auth.user);
   return (
     <main className="bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {user?.firstName || "User"}
         </h1>
 
         <button className="edit-button">Edit Name</button>

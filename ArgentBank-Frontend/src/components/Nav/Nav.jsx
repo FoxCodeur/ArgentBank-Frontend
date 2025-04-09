@@ -22,8 +22,6 @@ const Nav = () => {
     navigate("/");
     console.log("Redirection vers la page d'accueil après déconnexion.");
   };
-
-  console.log("Utilisation actuelle de l'application :");
   console.log("Utilisateur connecté : ", isLoggedIn);
   console.log("Utilisateur actuel : ", user);
 
