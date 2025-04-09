@@ -6,9 +6,12 @@ import { apiSlice } from "./slices/apiSlice"; // Import du slice RTK Query
 
 const store = configureStore({
   reducer: {
+    // configureStore a besoin d'un objet de reducers (fonctions pures)
+    //, pas des slices complets
     auth: authReducer, // 🔹 authSlice stocké sous la clé "auth"
 
-    [apiSlice.reducerPath]: apiSlice.reducer, // 🔹 apiSlice stocké sous sa clé "api"
+    [apiSlice.reducerPath]: apiSlice.reducer, // 🔹 apiSlice stocké
+    // sous sa clé "api"
   },
 
   // Configuration des middlewares pour RTK Query
