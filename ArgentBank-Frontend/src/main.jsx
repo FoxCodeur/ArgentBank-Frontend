@@ -10,6 +10,8 @@ import App from "./components/App/App.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
+      {/* Comme pour le Context dans le projet précédent,
+     on englobe l'application avec un Provider */}
       <Provider store={store}>
         <App />
       </Provider>

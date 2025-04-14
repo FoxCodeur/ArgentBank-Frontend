@@ -19,6 +19,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       console.log("Utilisateur authentifié : ", state.user);
       console.log("Token d'authentification : ", state.token);
+      console.log("connecté : ", state.isAuthenticated);
     },
     logOut: (state) => {
       state.user = null;

@@ -1,0 +1,107 @@
+.edit-user-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 2rem auto;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .form-fields {
+    width: 60%; // nettement plus petit que .edit-user-form
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    label {
+      min-width: 100px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      background-color: #f9f9f9;
+      color: #2c3e50;
+
+      &:read-only {
+        background-color: #eaeaea;
+        color: #7f8c8d;
+        cursor: not-allowed;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%; // prend toute la largeur du formulaire
+
+    .edit-button {
+      flex: 1;
+      max-width: 200px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+
+    .form-fields {
+      width: 100%;
+    }
+
+    .form-group {
+      flex-direction: column;
+      align-items: stretch;
+
+      label {
+        min-width: auto;
+      }
+    }
+
+    .form-actions {
+      flex-direction: column;
+      align-items: center;
+
+      .edit-button {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 // Imports
 
 // ==============================
-
+// Ici on configure les requêtes API avec Redux Toolkit Query
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { selectToken } from "../redux/slices/authSlice"; // Import du sélecteur pour obtenir le token depuis le store
 
