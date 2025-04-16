@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // État initial
 const initialState = {
-  user: null,
+  user: null, // qui comprend les informations de l'utilisateur
+  // email, firstName, lastName, userName.
   token: null,
   isAuthenticated: false,
 };
@@ -25,7 +26,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      console.log("Utilisateur déconnecté.");
+      console.log("Utilisateur s'est bien déconnecté.");
     },
   },
 });
@@ -36,7 +37,7 @@ export const { setCredentials, logOut } = authSlice.actions;
 // Export du reducer
 export default authSlice.reducer;
 
-// Sélecteurs
+// Sélecteurs permettent d'accéder aux données du state
 export const selectUser = (state) => state.auth.user;
 export const selectToken = (state) => state.auth.token;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;

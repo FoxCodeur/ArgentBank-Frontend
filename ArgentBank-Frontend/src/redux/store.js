@@ -1,40 +1,35 @@
-// src/redux/store.js
-
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slices/authSlice"; // Import du slice utilisateur
-import { apiSlice } from "./slices/apiSlice"; // Import du slice RTK Query
+import authReducer from "./slices/authSlice";
+import { apiSlice } from "./slices/apiSlice";
+// Importez les fonctions nécessaires de redux-persist
+import { persistStore, persistReducer } from "redux-persist";
+import sessionStorage from "redux-persist/lib/storage/session"; // Pour sessionStorage
+
+// Configuration de la persistance pour le slice auth
+const authPersistConfig = {
+  key: "auth", // Clé sous laquelle les données seront stockées
+  storage: sessionStorage, // ← Changé ici
+  whitelist: ["user", "token", "isAuthenticated"], // Seuls ces champs seront persistés
+};
+
+// Appliquez persistReducer au authReducer
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const store = configureStore({
-  // On importe la partie du store Redux Toolkit pour la gestion des slices
   reducer: {
-    // configureStore a besoin d'un objet de reducers (fonctions pures)
-    //, pas des slices complets
-    auth: authReducer, // 🔹 authSlice stocké sous la clé "auth"
-    // slice spécial pour gérer les appels API.
-    [apiSlice.reducerPath]: apiSlice.reducer, // 🔹 apiSlice stocké
-    // sous sa clé "api"
+    auth: persistedAuthReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
-
-  // Configuration des middlewares pour RTK Query
-
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware({
+      // Désactivez le contrôle de sérialisation pour redux-persist
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }).concat(apiSlice.middleware),
 });
 
+// Créez le persistor
+export const persistor = persistStore(store);
+
 export default store;
-
-// src/redux/store.js
-
-//import { configureStore } from "@reduxjs/toolkit";
-
-//const store = configureStore({
-
-// reducer: {
-
-// Ajoutez vos slices ici
-
-// },
-
-//});
-
-// export default store;

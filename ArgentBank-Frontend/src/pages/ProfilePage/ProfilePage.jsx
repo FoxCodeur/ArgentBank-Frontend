@@ -1,16 +1,13 @@
-import React, { useState } from "react"; // Import de useState pour
-// gérer l'état local (mode édition)
-import { useSelector } from "react-redux"; // Hook Redux pour accéder
-// à l'état global
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import "./ProfilePage.scss";
-import EditUserForm from "../../components/EdithUserForm/EditUserForm"; // ✅ Assure-toi que le nom du dossier/fichier est correct
+import EditUserForm from "../../components/EdithUserForm/EditUserForm";
 
 const ProfilePage = () => {
-  const user = useSelector((state) => state.auth.user); // Récupère
-  // les infos de l'utilisateur depuis le store Redux
+  const user = useSelector((state) => state.auth.user);
 
-  const [isEditing, setIsEditing] = useState(false); // État local :
-  // true si on est en train de modifier le nom.
+  // État local pour gérer l'affichage du mode édition
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <main className="bg-dark">
@@ -21,24 +18,23 @@ const ProfilePage = () => {
             <h1>
               Welcome back
               <br />
-              {/* On affiche le prénom et le nom si disponibles,
-               sinon "User" */}
+              {/* Affichage du prénom et nom ou "User" si non disponible */}
               {user?.firstName || "User"} {user?.lastName || "User"}
             </h1>
 
-            {/* Le bouton déclenche le passage en mode édition */}
+            {/* Bouton pour activer le mode édition */}
             <button className="edit-button" onClick={() => setIsEditing(true)}>
               Edit Name
             </button>
           </>
         ) : (
-          // Si on est en train d'éditer : affichage du formulaire
+          // Si on est en mode édition, on affiche le formulaire d'édition
           <EditUserForm setIsEditing={setIsEditing} />
         )}
       </div>
-      <h2 className="sr-only">Accounts</h2>{" "}
-      {/* Accessibilité (lecture pour les lecteurs d'écran) */}
-      {/* 🔽 3 sections de comptes en banque : elles ne changent pas selon le mode d’édition */}
+
+      {/* Sections d'information de compte */}
+      <h2 className="sr-only">Accounts</h2>
       <section className="account">
         <div className="account-content-wrapper">
           <h3 className="account-title">Argent Bank Checking (x8349)</h3>
