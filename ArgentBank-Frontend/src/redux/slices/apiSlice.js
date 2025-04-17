@@ -17,8 +17,10 @@ export const apiSlice = createApi({
 
     // -------- Préparation des headers avant chaque requête
     prepareHeaders: (headers, { getState }) => {
-      const token = selectToken(getState()); // On récupère le token depuis le state Redux
-
+      const token = selectToken(getState()); // On récupère le token
+      // depuis le state Redux
+      // Ajoutez le Content-Type par défaut
+      headers.set("Content-Type", "application/json");
       if (token) {
         // Si un token existe, on l'ajoute dans le header Authorization
         headers.set("Authorization", `Bearer ${token}`);

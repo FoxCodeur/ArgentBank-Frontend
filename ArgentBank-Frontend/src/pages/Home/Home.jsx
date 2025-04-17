@@ -1,8 +1,9 @@
 import React from "react";
-import iconChat from "../../assets/img/icon-chat.png";
-import iconMoney from "../../assets/img/icon-money.png";
-import iconSecurity from "../../assets/img/icon-security.png";
+import iconChat from "../../assets/img/icon-chat.svg"; // Importation des SVGs comme images
+import iconMoney from "../../assets/img/icon-money.svg"; // Importation des SVGs comme images
+import iconSecurity from "../../assets/img/icon-security.svg"; // Importation des SVGs comme images
 import "./Home.scss";
+
 const Home = () => {
   return (
     <main className="home">
@@ -15,8 +16,11 @@ const Home = () => {
           <p className="text">Open a savings account with Argent Bank today!</p>
         </section>
       </div>
+
       <section className="features">
         <h2 className="sr-only">Features</h2>
+
+        {/* Premier élément avec l'icône SVG */}
         <div className="feature-item">
           <img src={iconChat} alt="Chat Icon" className="feature-icon" />
           <h3 className="feature-item-title">You are our #1 priority</h3>
@@ -25,8 +29,10 @@ const Home = () => {
             24/7 chat or through a phone call in less than 5 minutes.
           </p>
         </div>
+
+        {/* Deuxième élément avec l'icône SVG */}
         <div className="feature-item">
-          <img src={iconMoney} alt="Chat Icon" className="feature-icon" />
+          <img src={iconMoney} alt="Money Icon" className="feature-icon" />
           <h3 className="feature-item-title">
             More savings means higher rates
           </h3>
@@ -34,8 +40,14 @@ const Home = () => {
             The more you save with us, the higher your interest rate will be!
           </p>
         </div>
+
+        {/* Troisième élément avec l'icône SVG */}
         <div className="feature-item">
-          <img src={iconSecurity} alt="Chat Icon" className="feature-icon" />
+          <img
+            src={iconSecurity}
+            alt="Security Icon"
+            className="feature-icon"
+          />
           <h3 className="feature-item-title">Security you can trust</h3>
           <p>
             We use top of the line encryption to make sure your data and money
