@@ -42,7 +42,7 @@ const Nav = () => {
             <NavLink to="/user/profile" className="main-nav-item">
               <FontAwesomeIcon icon={faUserCircle} className="icon" />
               {/* Affiche le prénom de l'utilisateur ou "User" si le prénom est absent */}
-              {user?.firstName || "User"}
+              {user?.userName || "User"}
             </NavLink>
 
             <button onClick={handleLogout} className="main-nav-item">

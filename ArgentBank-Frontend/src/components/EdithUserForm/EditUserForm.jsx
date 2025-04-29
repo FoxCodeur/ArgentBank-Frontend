@@ -6,9 +6,12 @@ import "./EditUserForm.scss";
 
 const EditUserForm = ({ setIsEditing }) => {
   const dispatch = useDispatch();
+
   const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
+
   const [localUserName, setLocalUserName] = useState(user?.userName || "");
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading, error }] = useUpdateProfileMutation();
 
   const handleCancel = () => {
     setIsEditing(false);
@@ -16,28 +19,43 @@ const EditUserForm = ({ setIsEditing }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // On vérifit que le champ localUserName est vide
+    // ou qu'il correspond au userName de l'utilisateur actuel.
+    //  c’est-à-dire qu'il est identique à celui qu'il avait avant
+    // (celui qui est dans l’état user), pas de modification.
+    // Donc, pas besoin de soumettre des données au
+    // serveur.
     if (!localUserName || localUserName === user?.userName) {
       setIsEditing(false);
       return;
     }
 
     try {
-      // Envoi de la mise à jour au serveur (on ignore la réponse car nous utilisons optimistic update)
-      await updateProfile({ userName: localUserName }).unwrap();
+      if (!token) {
+        throw new Error("No authentication token available");
+      }
 
-      // Mise à jour optimiste du store Redux
+      const response = await updateProfile({
+        userName: localUserName,
+        // Le .unwrap() permet de traiter les réponses e terreurs de
+        // manière plus lisible et simplifiée lors d'un appel à une
+        // mutation ou une requête.
+      }).unwrap();
+      console.log("Update response:", response);
+
       dispatch(
         setCredentials({
-          user: { ...user, userName: localUserName },
-          token: user.token,
+          user: {
+            ...user,
+            userName: localUserName,
+          },
+          token,
         })
       );
 
       setIsEditing(false);
     } catch (err) {
-      console.error("Failed to update profile:", err);
-      alert("Failed to update profile");
+      alert("Failed to update profile. Error: " + err.message);
     }
   };
 
@@ -71,7 +89,7 @@ const EditUserForm = ({ setIsEditing }) => {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Saving..." : "Save"}
+            Save
           </button>
           <button
             className="edit-button style-button"
@@ -82,6 +100,12 @@ const EditUserForm = ({ setIsEditing }) => {
           </button>
         </div>
       </form>
+
+      {error && (
+        <div className="error-message">
+          Error: {error.data?.message || "Update failed"}
+        </div>
+      )}
     </div>
   );
 };

@@ -12,6 +12,11 @@ createRoot(document.getElementById("root")).render(
     {/* Comme pour le Context dans le projet précédent,
      on englobe l'application avec un Provider */}
     <Provider store={store}>
+      {/* ---------loading c'est un peu comme un loader, écran
+       d'attente*/}
+      {/* -----------------------Le persistor est l'instance qui 
+       connecte Redux à sessionStorage. Il sert à gérer la persistance
+       du state Redux  */}
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
           <App />

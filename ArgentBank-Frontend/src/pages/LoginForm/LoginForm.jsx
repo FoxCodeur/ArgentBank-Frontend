@@ -1,27 +1,34 @@
-import React, { useState } from "react"; // state pour gérer l'état local du formulaire.
+import React, { useState } from "react"; // state pour gérer l'état
+// local du formulaire.
 import { useDispatch } from "react-redux"; // Pour envoyer des actions Redux - stoker token et utilisateur.
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Pour la navigation
+//  après une connexion succès.
 import {
-  useLoginMutation,
-  useLazyGetUserProfileQuery,
+  useLoginMutation, // hook pour effectuer la requête de connexion.
+  useLazyGetUserProfileQuery, // hook pour déclencher manuellement la
+  // requête profil.
 } from "../../redux/slices/apiSlice"; // API RTK Query pour se connecter et récupérer le profil.
-import { setCredentials } from "../../redux/slices/authSlice"; // Action pour stocker les informations d'authentification dans le store Redux.
+import { setCredentials } from "../../redux/slices/authSlice"; //Action
+//  pour stocker les informations d'authentification dans le store Redux.
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import "./LoginForm.scss";
 
 const LoginForm = () => {
   const dispatch = useDispatch(); // Pour envoyer des actions Redux.
-  const navigate = useNavigate(); // Pour la navigation après une connexion réussie.
+  const navigate = useNavigate(); // Pour la navigation après une
+  //  connexion réussie.
   const [formData, setFormData] = useState({ email: "", password: "" });
   // ---État local pour gérer les données du formulaire.
 
   // Mutation pour la connexion et récupération du profil de
   // l'utilisateur.
-  const [login, { isLoading: isLoginLoading, error: loginError }] =
-    useLoginMutation();
+  const [login, { isLoading: isLoginLoading }] =
+    // Un booléen qui me dit si la requête est en cours.
+    useLoginMutation(); // Hook pour effectuer la requête de connexion.
   const [getUserProfile, { isLoading: isProfileLoading }] =
-    useLazyGetUserProfileQuery();
+    useLazyGetUserProfileQuery(); // J'appelle cette fonction lorsque
+  // je veux lancer une requête de récupération du profil.
 
   // Gérer les changements dans les champs du formulaire.
   const handleInputChange = (e) => {
@@ -38,7 +45,8 @@ const LoginForm = () => {
   // Fonction de soumission du formulaire.
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationError = validateForm(); // On vérifie déjà si le formulaire est valide.
+    const validationError = validateForm(); // On vérifie déjà si le
+    // formulaire est valide.
     if (validationError) return alert(validationError);
 
     try {
@@ -59,7 +67,7 @@ const LoginForm = () => {
       navigate("/user/profile");
     } catch (err) {
       console.error("Erreur de connexion:", err);
-      alert(loginError?.data?.message || "Échec de la connexion");
+      alert(err?.data?.message || "Échec de la connexion");
     }
   };
 
@@ -105,13 +113,6 @@ const LoginForm = () => {
           <button type="submit" className="sign-in-button" disabled={isLoading}>
             {isLoading ? "Connexion..." : "Sign In"}
           </button>
-
-          {/* Afficher un message d'erreur si la connexion échoue */}
-          {loginError && (
-            <p className="error-message">
-              Erreur : {loginError.data?.message || "Échec de la connexion"}
-            </p>
-          )}
         </form>
       </section>
     </main>

@@ -1,7 +1,7 @@
 import React from "react";
-import iconChat from "../../assets/img/icon-chat.svg"; // Importation des SVGs comme images
-import iconMoney from "../../assets/img/icon-money.svg"; // Importation des SVGs comme images
-import iconSecurity from "../../assets/img/icon-security.svg"; // Importation des SVGs comme images
+import iconChat from "../../assets/img/icon-chat.svg";
+import iconMoney from "../../assets/img/icon-money.svg";
+import iconSecurity from "../../assets/img/icon-security.svg";
 import "./Home.scss";
 
 const Home = () => {
@@ -20,7 +20,6 @@ const Home = () => {
       <section className="features">
         <h2 className="sr-only">Features</h2>
 
-        {/* Premier élément avec l'icône SVG */}
         <div className="feature-item">
           <img src={iconChat} alt="Chat Icon" className="feature-icon" />
           <h3 className="feature-item-title">You are our #1 priority</h3>
@@ -30,7 +29,6 @@ const Home = () => {
           </p>
         </div>
 
-        {/* Deuxième élément avec l'icône SVG */}
         <div className="feature-item">
           <img src={iconMoney} alt="Money Icon" className="feature-icon" />
           <h3 className="feature-item-title">
@@ -41,7 +39,6 @@ const Home = () => {
           </p>
         </div>
 
-        {/* Troisième élément avec l'icône SVG */}
         <div className="feature-item">
           <img
             src={iconSecurity}

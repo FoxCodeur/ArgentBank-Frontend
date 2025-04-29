@@ -30,8 +30,8 @@ export const apiSlice = createApi({
     },
   }),
 
-  // -------- tagTypes : étiquettes que l'on associe aux données récupérées ou modifiées
-  // Cela permet de gérer automatiquement le cache
+  // -------- tagTypes : étiquettes que l'on associe aux données récupérées
+  // ou modifiées. Cela permet de gérer automatiquement le cache
   tagTypes: ["User"],
 
   // -------- Les endpoints de l'API sont déclarés ici.

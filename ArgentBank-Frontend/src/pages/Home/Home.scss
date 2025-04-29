@@ -1,11 +1,16 @@
 .home {
   .hero {
-    background-image: url("../../assets/img/bank-tree.jpeg");
+    background-image: url("../../assets/img/bank-tree-mobile.webp");
     background-position: 0 -50px;
     background-size: cover;
     background-repeat: no-repeat;
     height: 300px;
     position: relative;
+    @media (min-width: 920px) {
+      background-image: url("../../assets/img/bank-tree-desktop.webp");
+      height: 400px;
+      background-position: 0% 33%;
+    }
     .hero-content {
       position: relative;
       top: 2rem;
@@ -44,6 +49,7 @@
   }
   .features {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     .feature-item {
       flex: 1;
