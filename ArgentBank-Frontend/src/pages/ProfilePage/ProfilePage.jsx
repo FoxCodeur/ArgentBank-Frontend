@@ -8,12 +8,12 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token); // Je récupère le token
   const navigate = useNavigate();
-  // 🔍 Si le token n'existe pas, on redirige l'utilisateur
+  // Si le token n'existe pas, on redirige l'utilisateur
   useEffect(() => {
     if (!token) {
-      navigate("/"); // ou "/error" si tu veux une page d'erreur
+      navigate("/");
     }
-  }, [token, navigate]); // on surveille token et navigate
+  }, [token, navigate]);
   // État local pour gérer l'affichage du mode édition
   const [isEditing, setIsEditing] = useState(false);
   // si pas de token, on redirige l'utilisateur ver la page d'accueil (ou bien une page d'erreur)
