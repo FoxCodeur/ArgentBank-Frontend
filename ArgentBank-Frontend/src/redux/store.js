@@ -12,7 +12,8 @@ import sessionStorage from "redux-persist/lib/storage/session"; //
 // Configuration de la persistance pour le slice auth
 const authPersistConfig = {
   key: "auth",
-  storage: sessionStorage,
+  storage: sessionStorage, // Le state est sauvegardé pour la session
+  // (disparaît à la fermeture).
   whitelist: ["user", "token", "isAuthenticated"], // Seuls ces
   //  champs seront persistés
 };

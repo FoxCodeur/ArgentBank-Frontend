@@ -28,7 +28,10 @@ const LoginForm = () => {
     useLoginMutation(); // Hook pour effectuer la requête de connexion.
   const [getUserProfile, { isLoading: isProfileLoading }] =
     useLazyGetUserProfileQuery(); // J'appelle cette fonction lorsque
-  // je veux lancer une requête de récupération du profil.
+  // je veux lancer une requête de récupération du profil. idéal
+  // après une action utilisateur (connexion, clic de bouton)
+  // je me connecte, je récupère le token et seulement après, j'appelle
+  // l'api pour obtenir le profil.
 
   // Gérer les changements dans les champs du formulaire.
   const handleInputChange = (e) => {
@@ -57,7 +60,9 @@ const LoginForm = () => {
       // 2. Stocker temporairement le token dans Redux.
       dispatch(setCredentials({ token }));
 
-      // 3. Récupérer le profil avec RTK Query.
+      // 3. Récupérer le profil avec RTK Query. avec unwrap, je
+      //  peux accéder directement aux données, erreurs de la réponse.
+      // avant de passer à la suite.
       const profileResponse = await getUserProfile().unwrap();
 
       // 4. Mettre à jour le store Redux avec les données complètes.
